@@ -12,11 +12,11 @@ defmodule Pooly.Server do
     GenServer.start_link(__MODULE__, [sup, pool_config], name: __MODULE__)
   end
 
-  def checkout do 
+  def checkout do
     GenServer.call(__MODULE__, :checkout)
   end
 
-  def checkin(worker_pid) do 
+  def checkin(worker_pid) do
     GenServer.cast(__MODULE__, {:checkin, worker_pid})
   end
 
@@ -94,7 +94,7 @@ defmodule Pooly.Server do
     prepopulate(size, sup, [])
   end
 
-  defp prepopulate(size, _sup, workers) when size > 1 do
+  defp prepopulate(size, _sup, workers) when size < 1 do
     workers
   end
 
@@ -105,5 +105,5 @@ defmodule Pooly.Server do
   defp new_worker(sup) do
     {:ok, worker} = Supervisor.start_child(sup, [[]])
     worker
-  end 
+  end
 end
